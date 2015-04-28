@@ -33,8 +33,10 @@ void printUsage() {
   printf("-i, --text-as-image: Attempt to parse documents even if the "
          "document's text is encoded as part of an embedded image (usually "
          "caused by scanned documents that have been processed with OCR). "
-         "These documents are not handeled well at the moment so precision is "
+         "These documents are not handled well at the moment so precision is "
          "liable to be poor\n");
+  printf("-d, --dpi <resolution>: Resolution of the output images in "
+         "dots per inch.\n");
   printf("-h, --help show usage\n");
 }
 
@@ -49,7 +51,7 @@ int main(int argc, char **argv) {
   std::string imagePrefix = "";
   std::string jsonPrefix = "";
   std::string finalPrefix = "";
-  const double resolution = 100;
+  int resolution = 100;
 
   const struct option long_options[] = {
       {"verbose", no_argument, &verbose, true},
@@ -62,12 +64,13 @@ int main(int argc, char **argv) {
       {"reverse", no_argument, &reverse, 'r'},
       {"text-as-image", no_argument, &textAsImage, true},
       {"save-mistakes", no_argument, &saveMistakes, true},
+      {"dpi", required_argument, NULL, 'd'},
       {"help", no_argument, NULL, 'h'},
       {0, 0, 0, 0}};
 
   int opt;
   int optionIndex;
-  while ((opt = getopt_long(argc, argv, "svfrmij:a:o:p:", long_options,
+  while ((opt = getopt_long(argc, argv, "svfrmij:a:o:p:d:", long_options,
                             &optionIndex)) != -1) {
     switch (opt) {
     case 0:
@@ -98,6 +101,9 @@ int main(int argc, char **argv) {
       break;
     case 'i':
       textAsImage = true;
+      break;
+    case 'd':
+      resolution = std::stoi(optarg);
       break;
     case 'h':
       printUsage();

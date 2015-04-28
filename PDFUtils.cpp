@@ -180,13 +180,13 @@ bool isFilledByImage(PDFDoc *doc, int page) {
   return filled;
 }
 
-PIX *getPix(SplashOutputDev *splashOut, PDFDoc *doc, int page, double dpi) {
+PIX *getPix(SplashOutputDev *splashOut, PDFDoc *doc, int page, int dpi) {
   splashOut->startDoc(doc);
   doc->displayPage(splashOut, page, dpi, dpi, 0, gTrue, gFalse, gFalse);
   return bitmapToPix(splashOut->getBitmap());
 }
 
-std::unique_ptr<PIX> getFullRenderPix(PDFDoc *doc, int page, double dpi) {
+std::unique_ptr<PIX> getFullRenderPix(PDFDoc *doc, int page, int dpi) {
   SplashColor paperColor = {255, 255, 255};
   SplashOutputDev *splashOut =
       new SplashOutputDev(splashModeMono8, 4, gFalse, paperColor, gTrue, gTrue,
@@ -196,7 +196,7 @@ std::unique_ptr<PIX> getFullRenderPix(PDFDoc *doc, int page, double dpi) {
   return output;
 }
 
-std::unique_ptr<PIX> getGraphicOnlyPix(PDFDoc *doc, int page, double dpi) {
+std::unique_ptr<PIX> getGraphicOnlyPix(PDFDoc *doc, int page, int dpi) {
   SplashColor paperColor = {255, 255, 255};
   SplashGraphicsOutputDev *splashOut =
       new SplashGraphicsOutputDev(splashModeMono8, 4, gFalse, paperColor, gTrue,
@@ -206,7 +206,7 @@ std::unique_ptr<PIX> getGraphicOnlyPix(PDFDoc *doc, int page, double dpi) {
   return output;
 }
 
-std::vector<TextPage *> getTextPages(PDFDoc *doc, double dpi) {
+std::vector<TextPage *> getTextPages(PDFDoc *doc, int dpi) {
   std::vector<TextPage *> text = std::vector<TextPage *>();
   for (int i = 1; i <= doc->getNumPages(); ++i) {
     // TOOD should not need to rebuild this each time
@@ -324,7 +324,7 @@ void saveFiguresImage(std::vector<Figure> &figures, PIX *original,
   }
 }
 
-void saveFiguresJSON(std::vector<Figure> &figures, PIX *original, double dpi,
+void saveFiguresJSON(std::vector<Figure> &figures, PIX *original, int dpi,
                      std::string prefix, std::vector<TextPage *> text) {
   for (Figure fig : figures) {
     std::string name = prefix + "-" + getFigureTypeString(fig.type) + "-" +
@@ -373,7 +373,7 @@ void saveFiguresJSON(std::vector<Figure> &figures, PIX *original, double dpi,
   }
 }
 
-void saveFigures(std::vector<Figure> &figures, PIX *original, double dpi,
+void saveFigures(std::vector<Figure> &figures, PIX *original, int dpi,
                  std::vector<TextPage *> pages, std::string imagePrefix,
                  std::string jsonPrefix) {
   if (imagePrefix.length() != 0)
