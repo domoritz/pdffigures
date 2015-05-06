@@ -35,8 +35,8 @@ void printUsage() {
          "caused by scanned documents that have been processed with OCR). "
          "These documents are not handled well at the moment so precision is "
          "liable to be poor\n");
-  printf("-d, --dpi <resolution>: Resolution of the output images in "
-         "dots per inch.\n");
+  printf("-d, --dpi <resolution>: Resolution of the rendered images in "
+         "dots per inch. This affects how well charts can be extracted. [default: 100]\n");
   printf("-h, --help show usage\n");
 }
 
