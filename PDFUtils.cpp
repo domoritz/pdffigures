@@ -264,7 +264,7 @@ GooString *jsonSanitizeUTF8(GooString *str) {
   while (j < str->getLength()) {
     char c = str->getChar(j);
     if (c < 0 or c > 127) {
-      // For multi-byte encoding, skip over extra trailling bytes
+      // For multi-byte encoding, skip over extra trailing bytes
       int leadingOne = 2;
       while ((c >> (8 - leadingOne) & 1) == 1) {
         ++j;
